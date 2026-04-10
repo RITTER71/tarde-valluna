@@ -28,12 +28,37 @@
 
                 <img src="assets/focos_y banderitas.webp" alt="" class="absolute inset-0 z-0 w-full object-contain">
 
+
+
                 <img src="assets/banderitas_1.png" alt="" class="relative z-10 w-full h-auto">
+
+
+
+
+
+
+
+
 
                 <img src="assets/tarde valluna_.webp" alt="Tarde Valluna" class="absolute z-20 w-full top-10 left-0">
 
+
+
+
+
                 <img src="assets/logo wiñay.png" alt="Logo Wiñay"
                     class="relative hover:scale-110 z-30 block mx-auto mt-[180px] w-[350px] drop-shadow-2xl transition-all duration-300">
+
+                <div class="relative z-50 flex flex-col items-center gap-3 pointer-events-auto">
+                    <audio id="miMusica" loop preload="auto" playsinline>
+                        <source src="assets/musica.ogg" type="audio/ogg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+
+                    <button id="botonMusica" type="button" class="hover:scale-110 transition-transform">Play /
+                        Pausa</button>
+                    <p id="estadoMusica" class="text-xs text-white/80"></p>
+                </div>
 
                 <div class="relative z-40 flex justify-center mt-[50px]">
 
@@ -72,7 +97,7 @@
                 </div>
             </div>
 
-            <section id="#integrantes"></section>
+            <section id="integrantes"></section>
 
             <img src="assets/integrantes del grupo.webp" alt="integrantes">
 
@@ -81,8 +106,8 @@
                     Confirma tu asistencia aquí:
                 </h3>
 
-                <a href="https://wa.me/15712835489?text=¡Hola!%20Quiero%20confirmar%20mi%20asistencia%20para%20la%20Tarde%20Valluna%20del%20Sábado""
-                    target=" _blank"
+                <a href="https://wa.me/15712835489?text=¡Hola!%20Quiero%20confirmar%20mi%20asistencia%20para%20la%20Tarde%20Valluna%20del%20Sábado"
+                    target="_blank" rel="noopener noreferrer"
                     class="flex items-center justify-center space-x-3 w-full bg-[#25D366] hover:bg-[#1fb355] text-white py-4 rounded-2xl font-black text-xl shadow-[0_10px_20px_rgba(37,211,102,0.3)] transition-all duration-300 transform active:scale-95 border">
 
 
@@ -158,6 +183,40 @@
                 document.getElementById('minutes').innerText = "00";
             }
         }, 1000);
+
+
+        const musica = document.getElementById('miMusica');
+        const boton = document.getElementById('botonMusica');
+        const estado = document.getElementById('estadoMusica');
+
+        function setEstado(texto) {
+            if (estado) estado.textContent = texto;
+        }
+
+        setEstado('Música en pausa');
+
+        boton.addEventListener('click', () => {
+            if (musica.paused) {
+                musica.load();
+                const p = musica.play();
+                if (p && typeof p.then === 'function') {
+                    p.then(() => {
+                        boton.textContent = 'Pausar Música';
+                        setEstado('Reproduciendo');
+                    }).catch((err) => {
+                        console.error('No se pudo reproducir audio:', err);
+                        setEstado('El navegador bloqueó la reproducción (revisa permisos/sonido).');
+                    });
+                } else {
+                    boton.textContent = 'Pausar Música';
+                    setEstado('Reproduciendo');
+                }
+            } else {
+                musica.pause();
+                boton.textContent = 'Poner Música';
+                setEstado('Música en pausa');
+            }
+        });
     </script>
 </body>
 
